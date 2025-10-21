@@ -22,7 +22,7 @@ This service ensures reliable delivery of transactional emails (invoices, passwo
 
 - Python 3.8+
 - Redis (for distributed locking)
-- SQL Database (PostgreSQL recommended, SQLite supported)
+- SQL Database
 
 ### Installation
 
@@ -113,21 +113,9 @@ Access service statistics at `/stats` endpoint for:
 - Failed attempts
 - Current pending queue size
 
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## Author
 
-Noor Ulain - [@noorulain276775](https://github.com/noorulain276775)
+Noor Ul ain - [@noorulain276775](https://github.com/noorulain276775)
 
 ## Acknowledgments
 
