@@ -9,7 +9,7 @@ INTERVAL = int(os.environ.get('GEN_INTERVAL', 5))
 
 # Imperfect: sometimes sends duplicate or malformed data
 def generate_email_event():
-    email_id = random.choice(['a7b12345', 'b8c23456', 'c9d34567']) if random.random() < 0.7 else str(random.randint(1000, 9999))
+    email_id = random.choice(['2345', '3456', '4567']) if random.random() < 0.7 else str(random.randint(10_000_000, 99_999_999))
     user = random.choice(['bob@example.com', 'alice@example.com'])
     subject = random.choice(['Your invoice', 'Password reset', 'Welcome'])
     body = 'You have a new message...'
