@@ -38,9 +38,9 @@ python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-3. Install dependencies:
+3. Running Docker Image:
 ```bash
-pip install -r requirements.txt
+docker build -t fastapi-email-dedupe ./fastapi_app
 ```
 
 4. Configure environment variables:
