@@ -4,7 +4,7 @@ import time
 import random
 import json
 
-VERIFY_URL = os.environ.get('VERIFY_URL', 'http://flask_verification:5000/webhook/email')
+VERIFY_URL = os.environ.get('VERIFY_URL', 'http://flask_verification:5000/emails/create')
 INTERVAL = int(os.environ.get('GEN_INTERVAL', 5))
 
 # Imperfect: sometimes sends duplicate or malformed data

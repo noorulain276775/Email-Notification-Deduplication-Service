@@ -9,7 +9,7 @@ services:
   email_generator:
     build: ./email_generator
     environment:
-      - VERIFY_URL=http://flask_verification:5000/webhook/email
+      - VERIFY_URL=http://flask_verification:5000/emails/create
       - GEN_INTERVAL=3
     depends_on:
       - flask_verification
