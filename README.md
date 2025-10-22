@@ -115,10 +115,4 @@ Access service statistics at `/stats` endpoint for:
 
 ## Author
 
-Noor Ul ain - [@noorulain276775](https://github.com/noorulain276775)
-
-## Acknowledgments
-
-- Thanks to all contributors
-- Inspired by real-world email notification systems
-- Built with best practices for webhook handling and email delivery
+Noor Ul ain Ibrahim - [@noorulain276775](https://github.com/noorulain276775)
