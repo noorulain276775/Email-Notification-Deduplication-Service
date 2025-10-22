@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  flask_verification:
+    build: ./flask_verification
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+  email_generator:
+    build: ./email_generator
+    environment:
+      - VERIFY_URL=http://flask_verification:5000/webhook/email
+      - GEN_INTERVAL=3
+    depends_on:
+      - flask_verification
