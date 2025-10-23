@@ -1,0 +1,1 @@
+# This file will be using background worker for email verification and checking
