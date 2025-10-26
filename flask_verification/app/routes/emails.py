@@ -1,36 +1,45 @@
-from flask import Blueprint, request, jsonify
-from ..extensions import db
-from ..models import Email
-from sqlalchemy import select
-from sqlalchemy.exc import IntegrityError
+from flask import Blueprint, current_app, jsonify, request
 
 bp = Blueprint("emails", __name__, url_prefix="/emails")
 
+
+def _get_service():
+    service = current_app.extensions.get("email_verification_service")
+    if service is None:
+        current_app.logger.error("Email verification service not configured.")
+        return None
+    service.start()
+    return service
+
+
 @bp.post("/create")
 def create_email():
-    data = request.get_json(silent=True) or {}
-    required_fields = ("email_id", "user", "body")
-    missing = [k for k in required_fields if k not in data]
-    if missing:
-        return jsonify({"error": f"Missing required fields: {', '.join(missing)}"}), 400
-    email_id = str(data["email_id"])
-    existing_id = db.session.execute(select(Email.id).filter_by(email_id=email_id)).scalar_one_or_none()
-    if existing_id is not None:
-        return jsonify({"message": "Email is duplicate", "id": existing_id}), 409
-    e = Email(
-        email_id=data["email_id"],
-        user=data["user"],
-        subject=data.get("subject"),
-        body=data.get("body"),
-        state=data.get("state", "pending"),
-    )
-    db.session.add(e)
-    try:
-        db.session.commit()
-    except IntegrityError:
-        db.session.rollback()
-        return jsonify({"message": "Error occured"}), 409
-    return jsonify({"id": e.id}), 201
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        return jsonify({"error": "Invalid or missing JSON payload"}), 400
+
+    service = _get_service()
+    if service is None:
+        return jsonify({"error": "Verification service unavailable"}), 503
+
+    job_id = service.enqueue(data)
+    return jsonify({"job_id": job_id, "status": "queued"}), 202
+
+
+@bp.get("/status/<job_id>")
+def email_status(job_id):
+    service = _get_service()
+    if service is None:
+        return jsonify({"error": "Verification service unavailable"}), 503
+
+    result = service.get_result(job_id)
+    if result is None:
+        return jsonify({"error": "Unknown job id"}), 404
+
+    payload = dict(result)
+    payload["job_id"] = job_id
+    status_code = payload.pop("http_status", 200)
+    return jsonify(payload), status_code
 
 # @bp.get("")
 # def list_emails():

@@ -1,4 +1,6 @@
 from flask import Flask
+
+from .background import EmailVerificationService
 from .config import DevConfig
 from .extensions import db
 from app.routes.emails import bp as emails_bp
@@ -16,5 +18,8 @@ def create_app(config_object=DevConfig):
     # create tables (dev convenience)
     with app.app_context():
         db.create_all()
+
+    # start background verification worker
+    EmailVerificationService(app)
 
     return app
